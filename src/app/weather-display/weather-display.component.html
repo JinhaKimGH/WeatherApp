@@ -1,3 +1,5 @@
-<div class="weather-display">
-    {{weather?.coord?.lat}}
+<div [ngClass]="displayClass">
+    <h2 class="weather-title">
+        <span>{{location}}</span> As of {{time | date : "'today at' hh:mm a"}} 
+    </h2>
 </div>
