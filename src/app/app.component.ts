@@ -13,4 +13,5 @@ import { ThemeToggleComponent } from './theme-toggle/theme-toggle.component';
 })
 export class AppComponent {
   title = 'WeatherApp';
+  systemOfMeasurement = 'metric';
 }

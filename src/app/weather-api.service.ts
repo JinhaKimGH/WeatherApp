@@ -15,8 +15,8 @@ export class WeatherAPIService {
   getNUll(){
     return "Hello";
   }
-  getWeather(lat: Number, long: Number) : Observable<Weather>{
-    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${environment.apiKey}`;
+  getWeather(lat: Number, long: Number, systemOfMeasurement: String) : Observable<Weather>{
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${environment.apiKey}&units=${systemOfMeasurement}`;
 
     return this.http.get<Weather>(url);
 

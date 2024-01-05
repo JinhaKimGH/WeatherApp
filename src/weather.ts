@@ -1,12 +1,12 @@
 interface Coordinates{
-    lon: String;
-    lat: String;
+    lon: Number;
+    lat: Number;
 }
 
 interface WeatherCondition{
     id: Number;
     main: String;
-    description: String;
+    description: string;
     icon: String;
 }
 
@@ -37,8 +37,8 @@ interface Precipitation{
 }
 
 interface Sys{
-    type: String;
-    id: String;
+    type: Number;
+    id: Number;
     message: String;
     country: String;
     sunrise: Number;
