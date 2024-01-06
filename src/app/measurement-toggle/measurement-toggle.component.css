@@ -1,0 +1,17 @@
+.selection{
+    border: none;
+    background-color: transparent;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.selection:hover{
+    background-color: rgba(0, 0, 0, 0.163);
+    cursor: pointer;
+}
+
+.selection.dark{
+    color: white !important;
+}

@@ -1,4 +1,8 @@
-<app-theme-toggle></app-theme-toggle>
+<nav class="nav">
+    <app-theme-toggle></app-theme-toggle>
+    <app-measurement-toggle [systemOfMeasurement]="systemOfMeasurement" (newSystem)="changeSystem($any($event))"></app-measurement-toggle>
+</nav>
+
 <app-weather-display [systemOfMeasurement]="systemOfMeasurement"></app-weather-display>
 
 <router-outlet></router-outlet>

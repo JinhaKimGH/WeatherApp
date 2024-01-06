@@ -1,41 +1,153 @@
 <div [ngClass]="displayClass">
-    <h2 class="weather-title">
-        <span>{{location}}</span> As of {{time | date : "'today at' hh:mm a"}} 
-    </h2>
-
-    <p>
-        <img [src]="weatherIconUrl"/>{{ weatherData.weather[0].description  | titlecase}}
-    </p>
-
-    <div class="temperature-display">
-        <p *ngIf="weatherData.main?.temp">Temperature: {{weatherData.main.temp}} °<span *ngIf="systemOfMeasurement === 'metric'">C</span><span *ngIf="systemOfMeasurement !== 'metric'">F</span></p>
-        <p *ngIf="weatherData.main?.feels_like">Feels Like: {{weatherData.main.feels_like}} °<span *ngIf="systemOfMeasurement === 'metric'">C</span><span *ngIf="systemOfMeasurement !== 'metric'">F</span></p>
-        <p *ngIf="weatherData.main?.temp_min">Minimum Temperature Today: {{weatherData.main.temp_min}} °<span *ngIf="systemOfMeasurement === 'metric'">C</span><span *ngIf="systemOfMeasurement !== 'metric'">F</span></p>
-        <p *ngIf="weatherData.main?.temp_max">Maximum Temperature Today: {{weatherData.main.temp_max}} °<span *ngIf="systemOfMeasurement === 'metric'">C</span><span *ngIf="systemOfMeasurement !== 'metric'">F</span></p>
+    <div class="mainDisplay">
+        <h2 class="weather-title">
+            <span>{{location}}</span> As of {{time | date : "'today at' hh:mm a"}} 
+        </h2>
+    
+        <div class="weatherIcon">
+            <p *ngIf="weatherData.main?.temp" class="temp">{{weatherData.main.temp}} °<span *ngIf="systemOfMeasurement === 'metric'">C</span><span *ngIf="systemOfMeasurement !== 'metric'">F</span></p>
+            <img [src]="weatherIconUrl"/>
+        </div>
+    
+        <p class="temp-desc">{{ weatherData.weather[0].description  | titlecase}}</p>
+    
+        <div class="temperature-display">
+            <p><span *ngIf="weatherData.main?.temp_min">Min {{weatherData.main.temp_min}} °<span *ngIf="systemOfMeasurement === 'metric'">C</span><span *ngIf="systemOfMeasurement !== 'metric'">F</span></span> • <span *ngIf="weatherData.main?.temp_max">Max {{weatherData.main.temp_max}} °<span *ngIf="systemOfMeasurement === 'metric'">C</span><span *ngIf="systemOfMeasurement !== 'metric'">F</span></span></p>
+        </div>
     </div>
+    
+    <div class="details">
+        <h2 class="weather-title">
+            Details
+        </h2>
 
-    <div class="other-display">
-        <p *ngIf="weatherData.main?.pressure">Pressure: {{weatherData.main.pressure}} hPa</p>
-        <p *ngIf="weatherData.main?.humidity">Humidity: {{weatherData.main.humidity}}%</p>
-        <p *ngIf="weatherData.main?.sea_level">Sea Level: {{weatherData.main.sea_level}} hPa</p>
-        <p *ngIf="weatherData.main?.grnd_level">Ground Level: {{weatherData.main.grnd_level}} hPa</p>
-        <p *ngIf="weatherData?.visibility">Visibility: {{weatherData.visibility}} <span *ngIf="systemOfMeasurement === 'metric'">km</span><span *ngIf="systemOfMeasurement !== 'metric'">miles</span></p>
-    </div>
+        <span *ngIf="weatherData.main?.feels_like">
+            <p class="temp-subheading">Feels Like</p>
+            <div class="temp">
+                {{weatherData.main.feels_like}} °
+                <span *ngIf="systemOfMeasurement === 'metric'">
+                    C
+                </span>
+                <span *ngIf="systemOfMeasurement !== 'metric'">
+                    F
+                </span>
+            </div>
+        </span>
 
-    <div class="wind-display">
-        <p *ngIf="weatherData.wind?.speed">Wind Speed: {{weatherData.wind.speed}} <span *ngIf="systemOfMeasurement === 'metric'">m/s</span><span *ngIf="systemOfMeasurement !== 'metric'">miles/h</span></p>
-        <p *ngIf="weatherData.wind?.deg">Wind Direction: {{weatherData.wind.deg}}°</p>
-    </div>
+        <div class="data-grid">
+            <div class="grid-element" *ngIf="weatherData.main?.pressure">
+                <div class="grid-flex">
+                    <span class="material-icons icon">
+                        compress
+                    </span>
+                    Pressure 
+                </div>
+                {{weatherData.main.pressure}} hPa
+            </div>
+         
+            <div class="grid-element" *ngIf="weatherData.main?.humidity">
+                <div class="grid-flex">
+                    <span class="material-icons icon">
+                        water_drop
+                    </span>
+                    Humidity
+                </div>
+                {{weatherData.main.humidity}}%
+            </div> 
 
-    <div class="cloud-display" *ngIf="weatherData?.clouds">
-        <p *ngIf="weatherData.clouds?.all">Cloud %: {{weatherData.clouds.all}}%</p>
-    </div>
+            <div class="grid-element" *ngIf="weatherData.main?.sea_level">
+                <div class="grid-flex">
+                    <span class="material-icons icon">
+                        waves
+                    </span>
+                    Sea Level
+                </div>
+                {{weatherData.main.sea_level}} hPa       
+            </div>
 
-    <div class="rain-display" *ngIf="weatherData?.rain">
-        <p *ngIf="weatherData.rain?.['1h']">Rain Fall: {{weatherData.rain['1h']}}mm</p>
-    </div>
+            <div class="grid-element" *ngIf="weatherData.main?.grnd_level">
+                <div class="grid-flex">
+                    <span class="material-icons icon">
+                        grass
+                    </span>
+                    Ground Level
+                </div>
+                {{weatherData.main.grnd_level}} hPa
+            </div>
 
-    <div class="snow-display" *ngIf="weatherData?.snow">
-        <p *ngIf="weatherData.snow?.['1h']">Snow Fall: {{weatherData.snow['1h']}}mm</p>
+            <div class="grid-element" *ngIf="weatherData?.visibility">
+                <div class="grid-flex">
+                    <span class="material-icons icon">
+                        visibility
+                    </span>
+                    Visibility
+                </div>
+
+                <span *ngIf="systemOfMeasurement === 'metric'">
+                    {{weatherData.visibility}} km
+                </span>
+                
+                <span *ngIf="systemOfMeasurement !== 'metric'">
+                    {{weatherData.visibility}} miles
+                </span>
+            </div>
+
+            <div class="grid-element" *ngIf="weatherData.wind?.speed">
+                <div class="grid-flex">
+                    <span class="material-icons icon">
+                        speed
+                    </span>
+                    Wind Speed
+                </div>
+                
+                <span *ngIf="systemOfMeasurement === 'metric'">
+                    {{weatherData.wind.speed}} m/s
+                </span>
+                
+                <span *ngIf="systemOfMeasurement !== 'metric'">
+                    {{weatherData.wind.speed}} miles/h
+                </span>
+            </div>
+                
+            <div class="grid-element" *ngIf="weatherData.wind?.deg">
+                <div class="grid-flex">
+                    <span class="material-icons icon">
+                        explore
+                    </span>
+                    Wind Direction
+                </div>
+                {{weatherData.wind.deg}}°
+            </div>
+
+            <div class="grid-element" *ngIf="weatherData.clouds?.all">
+                <div class="grid-flex">
+                    <span class="material-icons icon">
+                        wb_cloudy
+                    </span>
+                    Cloudiness
+                </div>
+                {{weatherData.clouds.all}}%
+            </div>
+            
+            <div class="grid-element" *ngIf="weatherData.rain?.['1h']">
+                <div class="grid-flex">
+                    <span class="material-icons icon">
+                        umbrella
+                    </span>
+                    Rain Fall
+                </div>
+                {{weatherData.rain['1h']}} mm
+            </div>
+
+            <div class="grid-element" *ngIf="weatherData.snow?.['1h']">
+                <div class="grid-flex">
+                    <span class="material-icons icon">
+                        cloudy_snowing
+                    </span>
+                    Snow Fall
+                </div>
+                {{weatherData.snow['1h']}} mm
+            </div>
+        </div>
     </div>
 </div>

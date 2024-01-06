@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
   providers: [WeatherAPIService]
 }) 
 export class WeatherDisplayComponent {
-  @Input() systemOfMeasurement = '';
+  @Input() systemOfMeasurement: String = '';
   @Input() location = "Toronto, Canada";
 
   weatherData: Weather = {"coord":{"lon":-79.347,"lat":43.6511},"weather":[{"id":804,"main":"Clouds","description":"overcast clouds","icon":"04n"}],"base":"stations","main":{"temp":-3.16,"feels_like":-8.62,"temp_min":-4.7,"temp_max":-2.66,"pressure":1025,"humidity":70,"sea_level":0,"grnd_level":0},"visibility":10000,"wind":{"speed":4.63,"deg":260,"gust":0},"clouds":{"all":100},"dt":1704424273,"sys":{"type":2,"id":2040045,"country":"CA","sunrise":1704372654,"sunset":1704405180, "message":""},"timezone":-18000,"id":6176177,"name":"Ward's Island","cod":200, "rain": {"1h": 0, "3h": 0}, "snow": {"1h": 0, "3h": 0}};
@@ -39,11 +39,12 @@ export class WeatherDisplayComponent {
     this.findWeatherDetails();
   }
   
-  ngOnChanges(){
+  ngAfterContentChecked(){
     if(document.body.classList.contains('dark-theme')){
       this.displayClass = "weather-display dark";
     } else{
       this.displayClass = "weather-display light"
     }
+
   }
 }

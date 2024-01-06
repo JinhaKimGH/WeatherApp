@@ -1,7 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Charis+SIL&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Charis+SIL:wght@700&display=swap');
 
 *{
     font-family: 'Charis SIL', serif;
+    margin: 0;
+    padding: 0;
 }
 
 .light-theme{
@@ -11,5 +14,13 @@
 
 .dark-theme{
     color: white;
+    text-decoration-color: white;
     background-color: #22232A;
+}
+
+.nav{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 10px 10px 10px;
 }
