@@ -5,6 +5,7 @@ import { RouterOutlet } from '@angular/router';
 import { WeatherDisplayComponent } from './weather-display/weather-display.component';
 import { ThemeToggleComponent } from './theme-toggle/theme-toggle.component';
 import { MeasurementToggleComponent } from './measurement-toggle/measurement-toggle.component';
+import { SearchBarComponent } from './search-bar/search-bar.component';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,8 @@ import { MeasurementToggleComponent } from './measurement-toggle/measurement-tog
     WeatherDisplayComponent, 
     ThemeToggleComponent, 
     FormsModule,
-    MeasurementToggleComponent
+    MeasurementToggleComponent,
+    SearchBarComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

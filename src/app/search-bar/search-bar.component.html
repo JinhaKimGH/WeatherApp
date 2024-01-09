@@ -1,0 +1,7 @@
+<form #f="ngForm" (ngSubmit)="search()">
+    <input id="searchCity" type="text" [class]="displayClass" placeholder="Search City" [(ngModel)]="searchCity" #ctrl="ngModel" name="searchCity" required/>
+</form>
+
+<li *ngFor="let location of locationList">
+    <a [href]="getSafeUrl(location)">{{location.name}}, {{location.state}}</a>
+</li>
