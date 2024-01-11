@@ -6,6 +6,9 @@ import { WeatherDisplayComponent } from './weather-display/weather-display.compo
 import { ThemeToggleComponent } from './theme-toggle/theme-toggle.component';
 import { MeasurementToggleComponent } from './measurement-toggle/measurement-toggle.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
+import { RouterModule } from '@angular/router';
+import { MeasurementService } from './measurement.service';
+
 
 @Component({
   selector: 'app-root',
@@ -17,14 +20,19 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
     ThemeToggleComponent, 
     FormsModule,
     MeasurementToggleComponent,
-    SearchBarComponent
+    SearchBarComponent,
+    RouterModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'WeatherApp';
-  systemOfMeasurement : String = 'metric';
+  systemOfMeasurement : string = 'metric';
+
+  constructor(
+      private measurementService: MeasurementService
+    ){}
 
   changeSystem(system: String){
     if(system == 'metric'){
@@ -32,5 +40,7 @@ export class AppComponent {
     } else{
       this.systemOfMeasurement = 'imperial';
     }
+    
+    this.measurementService.updateData(this.systemOfMeasurement);
   }
 }

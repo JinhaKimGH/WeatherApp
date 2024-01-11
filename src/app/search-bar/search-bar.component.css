@@ -1,5 +1,5 @@
 .search-bar{
-    width: 40vw;
+    width: 20vw;
     box-shadow: inset 0 0 0.5px 1px hsla(0, 0%, 100%, 0.075), 0 0 0 1px hsla(0, 0%, 0%, 0.05),
               0 0.3px 0.4px hsla(0, 0%, 0%, 0.02),
               0 0.9px 1.5px hsla(0, 0%, 0%, 0.045),
@@ -21,3 +21,42 @@
     border: 1px solid #555;
     outline: none !important;
   }
+
+.results{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 999;
+    list-style-type: none;
+    text-decoration: none;
+    justify-content: center;
+    color: black;
+    border-bottom: 1px solid rgb(184, 184, 184);
+    padding: 10px 5px 10px 5px;
+    font-size: 20px;
+    width: 90%;
+}
+
+.results:hover{
+    background-color: rgb(243, 240, 240);
+    cursor: pointer;
+}
+
+.list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    width: 20.5vw;
+    background-color: white;
+    margin-top: 7px;
+    list-style: none;
+    z-index: 999;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset;
+}
+
+.last-res{
+    border-bottom: none !important;
+}

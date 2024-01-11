@@ -1,7 +1,7 @@
-<form #f="ngForm" (ngSubmit)="search()">
+<form #f="ngForm" (ngSubmit)="search()" form="form" autocomplete="off">
     <input id="searchCity" type="text" [class]="displayClass" placeholder="Search City" [(ngModel)]="searchCity" #ctrl="ngModel" name="searchCity" required/>
+    <li class="list" *ngIf="locationList.length > 0">
+        <a *ngFor="let location of locationList; let i = index" [routerLink]="['/location', location.name, location.state, location.lat, location.lon]" class="results" [ngClass]="i == locationList.length - 1 ? 'last-res' : ''">{{location.name}}, {{location.state}}</a>
+    </li>
 </form>
 
-<li *ngFor="let location of locationList">
-    <a [href]="getSafeUrl(location)">{{location.name}}, {{location.state}}</a>
-</li>

@@ -1,40 +1,43 @@
 import { Location } from '../../location';
-import { Component } from '@angular/core';
+import { Component, ElementRef, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { LocationAPIService } from '../location-api.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-search-bar',
   standalone: true,
   imports: [
     FormsModule,
-    CommonModule
+    CommonModule,
+    RouterModule
   ],
   templateUrl: './search-bar.component.html',
   styleUrl: './search-bar.component.css'
 })
 export class SearchBarComponent {
   displayClass = "search-bar light"
+  resultsClass = "results light"
   searchCity : String = '';
-  locationList : Location[] = [
-    {
-      "name": "Toronto",
-      "lat": 75,
-      "lon": 77,
-      "country": "CA",
-      "state": "Ontario"
+  locationList : Location[] = [];
+
+  constructor(private eRef: ElementRef, private sanitizer: DomSanitizer, private locationApiService : LocationAPIService) { }
+
+  @HostListener('document:click', ['$event'])
+
+  clickout(event : Event){
+    const listElement = this.eRef.nativeElement.querySelector('.list');
+    if(!this.eRef.nativeElement.contains(event.target) || (listElement && listElement.contains(event.target))){
+      this.locationList = []
     }
-  ];
-
-  constructor(private sanitizer: DomSanitizer) { }
-
-  search(){
-    console.log(this.searchCity);
   }
 
-  ngOnChange(){
-
+  search(){
+    if(this.searchCity.length > 0){
+      this.locationApiService.getLocation(this.searchCity).subscribe(locations => this.locationList = locations);
+    }
   }
 
   ngAfterContentChecked(){
@@ -46,8 +49,4 @@ export class SearchBarComponent {
 
   }
 
-  getSafeUrl(location: Location): SafeUrl {
-    const url = `lat=${location.lat}&lon=${location.lon}`;
-    return this.sanitizer.bypassSecurityTrustUrl(url);
-  }
 }
