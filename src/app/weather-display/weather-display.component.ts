@@ -16,40 +16,77 @@ import { MeasurementService } from '../measurement.service';
   providers: [WeatherAPIService]
 }) 
 export class WeatherDisplayComponent {
+
+  // Measurement strings
   systemOfMeasurement: String = "metric";
   prevMeasurement : String = "metric";
-  location : String | null = 'Toronto, Ontario';
 
-  weatherData: Weather = {"coord":{"lon":-79.347,"lat":43.6511},"weather":[{"id":804,"main":"Clouds","description":"overcast clouds","icon":"04n"}],"base":"stations","main":{"temp":-3.16,"feels_like":-8.62,"temp_min":-4.7,"temp_max":-2.66,"pressure":1025,"humidity":70,"sea_level":0,"grnd_level":0},"visibility":10000,"wind":{"speed":4.63,"deg":260,"gust":0},"clouds":{"all":100},"dt":1704424273,"sys":{"type":2,"id":2040045,"country":"CA","sunrise":1704372654,"sunset":1704405180, "message":""},"timezone":-18000,"id":6176177,"name":"Ward's Island","cod":200, "rain": {"1h": 0, "3h": 0}, "snow": {"1h": 0, "3h": 0}};
-  weatherIconUrl: String = `https://openweathermap.org/img/wn/${this.weatherData.weather[0].icon}/@2x.png`;
+  // Location string
+  location : String | null = '';
+
+  // Sunrise and Sunset times
+  sunrise : Date | null = null;
+  sunset : Date | null = null;
+
+  // Weather Data
+  weatherData: Weather | null = null;
+
+  // Current Time
   time: Date = new Date();
+
+  // Display Class (Light/Dark Mode)
   displayClass: String = "weather-display light";
 
+  // Hourly and Daily Weather Arrays
+  hourlyWeather : Weather[] = [];
+  dailyWeather : Weather[] = [];
+  
+  // Constructor initilializing services and route
   constructor(
     private weatherAPIService: WeatherAPIService,
     private route: ActivatedRoute,
     private sharedService: MeasurementService
-  ){}
-
+    ){}
+    
+  // Grabs the latitude, longitude, and city from route parameters
   lat : Number = Number(this.route.snapshot.paramMap.get('lat'));
   lon : Number= Number(this.route.snapshot.paramMap.get('lon'));
-
-  // Gets weather Icon
-  findWeatherDetails(){
-    this.weatherIconUrl = `https://openweathermap.org/img/wn/${this.weatherData.weather[0].icon}@2x.png`;
-  }
+  city: String = String(this.route.snapshot.paramMap.get('city'));
 
   // Calls the API with the parameters and updates the longitude, latitude and location
   callAPI(){
+    // Grabs the latitude, longitude, and city from the route parameters
     this.lat = Number(this.route.snapshot.paramMap.get('lat'));
 
     this.lon = Number(this.route.snapshot.paramMap.get('lon'));
 
-    this.location =`${this.route.snapshot.paramMap.get('city')} ${this.route.snapshot.paramMap.get('state') == 'undefined' ? "" : "," +  this.route.snapshot.paramMap.get('state')}`;
+    this.city = String(this.route.snapshot.paramMap.get('city'));
 
-    this.weatherAPIService.getWeather(this.lat, this.lon, this.systemOfMeasurement).subscribe(weather => this.weatherData = weather);
-    
-    this.findWeatherDetails();
+    // Subscribes to the weatherAPIService for next five days
+    this.weatherAPIService.getFiveDaysWeather(this.lat, this.lon, this.systemOfMeasurement).subscribe(weather => {
+      // Gets the list of weather data for the hourly
+      this.hourlyWeather = weather.list.slice(0, 8);
+
+      // Gets list of daily weather
+      this.dailyWeather = this.weatherAPIService.findDailySummaries(weather.list);
+
+      // Grabs the sunset and sunrise times from the weatherAPIService, also converts from unix to js timestamp
+      this.sunrise = new Date(weather.city.sunrise * 1000);
+      this.sunset = new Date(weather.city.sunset * 1000);
+
+      // Grabs the location off the weatherAPIService
+      this.location =`${this.city}${weather.city?.country ? ", " + weather.city?.country : ""}`;
+    }, error => {
+      
+    });
+
+    // Subscribes for Today's weather
+    this.weatherAPIService.getTodaysWeather(this.lat, this.lon, this.systemOfMeasurement).subscribe(weather => {
+      this.weatherData = weather;
+    }, error => {
+      this.weatherData = null;
+    });
+
   }
 
   // Grabs weather on initialization
@@ -82,4 +119,9 @@ export class WeatherDisplayComponent {
     }
 
   }
+
+  getWeatherIconSrc(weather: Weather): string{
+    return `https://openweathermap.org/img/wn/${weather ?  weather.weather[0].icon : ""}@2x.png`;
+  }
+
 }

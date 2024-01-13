@@ -61,4 +61,20 @@ export interface Weather {
     id: Number;
     name: String;
     cod: Number;
+    dt_txt: Date;
+}
+
+interface City{
+    id: String;
+    name: String;
+    country: String;
+    population: Number;
+    timezone: Number;
+    sunrise: number;
+    sunset: number;
+}
+
+export interface WeatherList{
+    list: Weather[];
+    city: City;
 }

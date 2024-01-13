@@ -9,7 +9,6 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
 import { RouterModule } from '@angular/router';
 import { MeasurementService } from './measurement.service';
 
-
 @Component({
   selector: 'app-root',
   standalone: true,

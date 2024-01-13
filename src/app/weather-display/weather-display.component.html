@@ -1,4 +1,4 @@
-<div [ngClass]="displayClass">
+<div [ngClass]="displayClass" *ngIf="weatherData">
     <div class="mainDisplay">
         <h2 class="weather-title">
             <span>{{location}}</span> As of {{time | date : "'today at' hh:mm a"}} 
@@ -6,7 +6,7 @@
     
         <div class="weatherIcon">
             <p *ngIf="weatherData.main?.temp" class="temp">{{weatherData.main.temp}} °<span *ngIf="systemOfMeasurement === 'metric'">C</span><span *ngIf="systemOfMeasurement !== 'metric'">F</span></p>
-            <img [src]="weatherIconUrl"/>
+            <img [src]="getWeatherIconSrc(weatherData)"/>
         </div>
     
         <p class="temp-desc">{{ weatherData.weather[0].description  | titlecase}}</p>
@@ -21,16 +21,33 @@
             Details
         </h2>
 
-        <span *ngIf="weatherData.main?.feels_like">
-            <p class="temp-subheading">Feels Like</p>
-            <div class="temp">
-                {{weatherData.main.feels_like}} °
-                <span *ngIf="systemOfMeasurement === 'metric'">
-                    C
-                </span>
-                <span *ngIf="systemOfMeasurement !== 'metric'">
-                    F
-                </span>
+        <span *ngIf="weatherData.main?.feels_like" class="span-subheading">
+            <div>
+                <p class="temp-subheading">Feels Like</p>
+                <div class="temp">
+                    {{weatherData.main.feels_like}} °
+                    <span *ngIf="systemOfMeasurement === 'metric'">
+                        C
+                    </span>
+                    <span *ngIf="systemOfMeasurement !== 'metric'">
+                        F
+                    </span>
+                </div>
+            </div>
+
+            <div *ngIf="sunrise && sunset" class="rise-set">
+                <p class="sunrise">
+                    <span class="material-icons icon">
+                        wb_twilight
+                    </span>
+                    {{sunrise | date : 'shortTime'}}
+                </p>
+                <p class="sunset">
+                    <span class="material-icons icon">
+                        wb_twilight
+                    </span>
+                    {{sunset | date : 'shortTime'}}
+                </p>
             </div>
         </span>
 
@@ -149,5 +166,49 @@
                 {{weatherData.snow['1h']}} mm
             </div>
         </div>
+    </div>
+
+    <div class="hourly">
+        <h2 class="weather-title">
+            Tomorrow's Forecast
+        </h2>
+
+        <div class="forecast" *ngIf="hourlyWeather.length > 0" >
+            <div *ngFor="let hour of hourlyWeather">
+                <div class="hourly-daily-forecast">
+                    <div class="forecast-time"> {{hour.dt_txt | date : "shortTime"}}</div>
+                    <div>{{hour.main.temp}} °<span *ngIf="systemOfMeasurement === 'metric'">C</span><span *ngIf="systemOfMeasurement !== 'metric'">F</span></div>
+                    <img [src]="getWeatherIconSrc(hour)"/>
+                    <div *ngIf="!(hour?.rain || hour?.snow)">--</div>
+                    <div *ngIf="hour?.rain">{{hour.rain['1h'] ? hour.rain['1h'] : hour.rain['3h']}}mm</div>
+                    <div *ngIf="hour?.snow">{{hour.snow['1h'] ? hour.snow['1h'] : hour.snow['3h']}}mm</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="daily">
+        <h2 class="weather-title">
+            Daily Forecast
+        </h2>
+
+        <div class="forecast" *ngIf="dailyWeather.length > 0">
+            <div *ngFor="let daily of dailyWeather">
+                <div class="hourly-daily-forecast">
+                    <div class="forecast-time">{{daily.dt_txt | date : "EEEE"}}</div>
+                    <div class="max-temp">{{daily.main.temp_max}} °<span *ngIf="systemOfMeasurement === 'metric'">C</span><span *ngIf="systemOfMeasurement !== 'metric'">F</span></div>
+                    <div class="min-temp">{{daily.main.temp_min}} °<span *ngIf="systemOfMeasurement === 'metric'">C</span><span *ngIf="systemOfMeasurement !== 'metric'">F</span></div>
+                    <img [src]="getWeatherIconSrc(daily)"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div [ngClass]="displayClass" *ngIf="!weatherData">
+    <div class="mainDisplay">
+        <h1>Oops!</h1>
+        <p class="errmsg">We can't seem to find the coordinates you are looking for. Error code: 404</p>
     </div>
 </div>
