@@ -24,7 +24,7 @@
         <span *ngIf="weatherData.main?.feels_like" class="span-subheading">
             <div>
                 <p class="temp-subheading">Feels Like</p>
-                <div class="temp">
+                <div class="temp two">
                     {{weatherData.main.feels_like}} °
                     <span *ngIf="systemOfMeasurement === 'metric'">
                         C
@@ -174,8 +174,8 @@
         </h2>
 
         <div class="forecast" *ngIf="hourlyWeather.length > 0" >
-            <div *ngFor="let hour of hourlyWeather">
-                <div class="hourly-daily-forecast">
+            <div *ngFor="let hour of hourlyWeather" class="container">
+                <div class="hourly-daily-forecast hourly-display">
                     <div class="forecast-time"> {{hour.dt_txt | date : "MMM d"}}</div>
                     <div class="forecast-time"> {{hour.dt_txt | date : "shortTime"}}</div>
                     <div class="max-temp">{{hour.main.temp}} °<span *ngIf="systemOfMeasurement === 'metric'">C</span><span *ngIf="systemOfMeasurement !== 'metric'">F</span></div>
@@ -195,7 +195,7 @@
 
         <div class="forecast" *ngIf="dailyWeather.length > 0">
             <div *ngFor="let daily of dailyWeather">
-                <div class="hourly-daily-forecast">
+                <div class="hourly-daily-forecast daily-display"> 
                     <div class="forecast-time">{{daily.dt_txt | date : "EEEE"}}</div>
                     <div class="max-temp">{{daily.main.temp_max}} °<span *ngIf="systemOfMeasurement === 'metric'">C</span><span *ngIf="systemOfMeasurement !== 'metric'">F</span></div>
                     <div class="min-temp">{{daily.main.temp_min}} °<span *ngIf="systemOfMeasurement === 'metric'">C</span><span *ngIf="systemOfMeasurement !== 'metric'">F</span></div>
