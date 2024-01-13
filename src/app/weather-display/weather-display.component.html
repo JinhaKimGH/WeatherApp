@@ -170,14 +170,15 @@
 
     <div class="hourly">
         <h2 class="weather-title">
-            Tomorrow's Forecast
+            Hourly Forecast
         </h2>
 
         <div class="forecast" *ngIf="hourlyWeather.length > 0" >
             <div *ngFor="let hour of hourlyWeather">
                 <div class="hourly-daily-forecast">
+                    <div class="forecast-time"> {{hour.dt_txt | date : "MMM d"}}</div>
                     <div class="forecast-time"> {{hour.dt_txt | date : "shortTime"}}</div>
-                    <div>{{hour.main.temp}} °<span *ngIf="systemOfMeasurement === 'metric'">C</span><span *ngIf="systemOfMeasurement !== 'metric'">F</span></div>
+                    <div class="max-temp">{{hour.main.temp}} °<span *ngIf="systemOfMeasurement === 'metric'">C</span><span *ngIf="systemOfMeasurement !== 'metric'">F</span></div>
                     <img [src]="getWeatherIconSrc(hour)"/>
                     <div *ngIf="!(hour?.rain || hour?.snow)">--</div>
                     <div *ngIf="hour?.rain">{{hour.rain['1h'] ? hour.rain['1h'] : hour.rain['3h']}}mm</div>

@@ -151,10 +151,12 @@
 
 .max-temp{
     font-size: 1.25vw !important;
+    color: rgb(69, 128, 224);
 }
 
 .min-temp{
     font-size: 0.75vw !important;
+    color: rgb(69, 128, 224);
 }
 
 .mainDisplay > h1{
